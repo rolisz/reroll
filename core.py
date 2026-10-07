@@ -20,7 +20,7 @@ from pydantic_ai.models import Model
 log = logging.getLogger("reroll")
 
 Kind = Literal["same", "open_moves", "interpretation", "contradiction"]
-Backend = Literal["api", "cli"]  # cli: `claude -p` on the user's Claude subscription instead of the billed API
+Backend = Literal["api", "cli"]  # cli: local Claude CLI; api: programmatic Anthropic API access
 Phase = Literal["sampling", "judging", "done"]
 
 
@@ -196,7 +196,7 @@ class CliError(Exception):
 
 
 async def run_claude_cli(prompt: str, *args: str) -> dict:
-    """Run `claude -p` as a plain chat on the user's Claude subscription; return its final `result` event."""
+    """Run `claude -p` as a plain local chat; return its final `result` event."""
     CLI_DIR.mkdir(exist_ok=True)
     # With ANTHROPIC_API_KEY in the environment (e.g. from .env), claude -p would bill the API instead.
     env = {key: value for key, value in os.environ.items() if key != "ANTHROPIC_API_KEY"}
@@ -262,7 +262,7 @@ class Reroller:
         max_tokens: int = 32000,
     ):
         self.session = session
-        # API keys (and subscriptions) limit concurrent requests, so samples beyond it wait for a free slot.
+        # Backends limit concurrent requests, so samples beyond the configured limit wait for a free slot.
         self.slots = asyncio.Semaphore(concurrency)
         self.concurrency = concurrency
         self.effort = effort

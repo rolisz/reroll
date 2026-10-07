@@ -1,7 +1,7 @@
 [project]
 name = "reroll"
 version = "0.1.0"
-description = "Add your description here"
+description = "Explore how independently sampled AI replies converge, diverge, and interpret a conversation"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [

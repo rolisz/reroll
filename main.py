@@ -36,7 +36,7 @@ def main() -> None:
         "--backend",
         choices=["cli", "api"],
         default="cli",
-        help="cli: `claude -p` on your Claude subscription (default); api: the Anthropic API, billed per token",
+        help="cli: local experimentation through `claude -p` (default); api: programmatic Anthropic API access",
     )
     parser.add_argument("--model", default="anthropic:claude-opus-5")
     parser.add_argument("--judge", default="anthropic:claude-haiku-4-5")
